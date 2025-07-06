@@ -27,7 +27,7 @@ const logger = log4js.getLogger();
 // logger.debug('デバッグレベルのログメッセージ');
 
 import 'discord.js'
-import {Client} from "discord.js";
+import {Client, GatewayIntentBits} from "discord.js";
 import dotenv from 'dotenv';
 
 logger.info('Starting Invitation_Next...')
@@ -35,4 +35,25 @@ logger.info('Starting Invitation_Next...')
 dotenv.configDotenv()
 
 const TOKEN = process.env.DISCORD_TOKEN;
+
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+  ]
+});
+
+client.once('ready', () => {
+  logger.info(`Logged in as ${client.user?.tag}`);
+});
+
+client.on('error', (error) => {
+  logger.error('Discord client error:', error);
+});
+
+client.login(TOKEN).catch(error => {
+  logger.error('Failed to login:', error);
+});
+
 
