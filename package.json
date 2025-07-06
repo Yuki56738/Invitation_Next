@@ -4,13 +4,19 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc -p",
+    "dev": "ts-node src/index.ts",
+    "start": "dist/index.js"
   },
   "dependencies": {
+    "discord.js": "^14.21.0",
+    "dotenv": "^17.0.1",
     "log4js": "^6.9.1"
   },
   "devDependencies": {
-    "typescript": "^5.5.3"
+    "@types/node": "^24.0.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   },
   "private": true
 }
