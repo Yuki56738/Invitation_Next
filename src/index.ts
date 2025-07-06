@@ -22,6 +22,17 @@ log4js.configure({
 const logger = log4js.getLogger();
 
 // 使用例
-logger.info('情報レベルのログメッセージ');
-logger.error('エラーレベルのログメッセージ');
-logger.debug('デバッグレベルのログメッセージ');
+// logger.info('情報レベルのログメッセージ');
+// logger.error('エラーレベルのログメッセージ');
+// logger.debug('デバッグレベルのログメッセージ');
+
+import 'discord.js'
+import {Client} from "discord.js";
+import dotenv from 'dotenv';
+
+logger.info('Starting Invitation_Next...')
+
+dotenv.configDotenv()
+
+const TOKEN = process.env.DISCORD_TOKEN;
+
