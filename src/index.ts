@@ -13,7 +13,7 @@ log4js.configure({
   categories: {
     default: { 
       appenders: ['console', 'file'], 
-      level: 'info'
+      level: 'debug'
     }
   }
 });
@@ -41,11 +41,17 @@ const client = new Client({
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
+      GatewayIntentBits.GuildMembers,
   ]
 });
 
 client.once('ready', () => {
   logger.info(`Logged in as ${client.user?.tag}`);
+  logger.debug('Connected to following guilds:')
+  client.guilds.cache.forEach(guild => {
+    logger.debug(guild.name)
+  });
+
 });
 
 client.on('error', (error) => {
