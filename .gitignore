@@ -15,3 +15,10 @@ yarn-error.log*
 /src/.env
 .env
 .env*
+
+.idea/
+dist/
+node_modules/
+src/.env
+src/logs/
+
