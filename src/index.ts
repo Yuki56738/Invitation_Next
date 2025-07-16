@@ -65,3 +65,4 @@ client.on('error', (error) => {
 client.login(TOKEN).catch(error => {
   logger.error('Failed to login:', error);
 });
+
