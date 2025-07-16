@@ -42,6 +42,7 @@ const client = new Client({
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildVoiceStates
     ]
 });
 
@@ -60,9 +61,14 @@ client.on('interactionCreate', async interaction => {
 
     if (commandName === 'ping') {
         await interaction.reply('Pong!')
+    }else if (commandName === 'setvc') {
+        await interaction.deferReply()
+        const optionVc = interaction.options.getString('vc')
+        logger.info(`***${interaction.user.tag} tried to set VC to ${optionVc}***`)
     }
 
 })
+
 
 client.on('error', (error) => {
     logger.error('Discord client error:', error);

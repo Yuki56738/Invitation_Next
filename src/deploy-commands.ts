@@ -17,6 +17,16 @@ const commandPing = new SlashCommandBuilder()
 
 commands.push(commandPing)
 
+const commandSetvc = new SlashCommandBuilder()
+    .setName('setvc')
+    .setDescription('VC作成用のVCを作成する')
+    .addStringOption(option => option
+        .setName('vc')
+        .setDescription('Voice Channel')
+        .setRequired(true))
+
+commands.push(commandSetvc)
+
 const rest = new REST({version: '9'}).setToken(TOKEN);
 
 rest.put(Routes.applicationGuildCommands(process.env.DISCORD_CLIENT_ID, process.env.DISCORD_GUILD_ID), {body: commands})
