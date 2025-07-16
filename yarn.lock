@@ -217,9 +217,9 @@ discord.js@^14.21.0:
     tslib "^2.6.3"
     undici "6.21.3"
 
-dotenv@^17.0.1:
+dotenv@^17.2.0:
   version "17.2.0"
-  resolved "https://registry.npmjs.org/dotenv/-/dotenv-17.2.0.tgz"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-17.2.0.tgz#e19678fdabcf86d4bfdb6764a758d7d44efbb6a2"
   integrity sha512-Q4sgBT60gzd0BB0lSyYD3xM4YxrXA9y4uBDof1JNYGzOXrQdQ6yX+7XIAqoFOGQFOTK1D3Hts5OllpxMDZFONQ==
 
 fast-deep-equal@3.1.3, fast-deep-equal@^3.1.3:
