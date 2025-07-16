@@ -54,6 +54,10 @@ client.once('ready', () => {
 
 });
 
+client.on('interactionCreate', interaction => {
+
+})
+
 client.on('error', (error) => {
   logger.error('Discord client error:', error);
 });
@@ -61,5 +65,3 @@ client.on('error', (error) => {
 client.login(TOKEN).catch(error => {
   logger.error('Failed to login:', error);
 });
-
-
