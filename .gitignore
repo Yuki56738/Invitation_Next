@@ -22,3 +22,7 @@ node_modules/
 src/.env
 src/logs/
 
+
+/src/generated/prisma
+
+/src/generated/prisma

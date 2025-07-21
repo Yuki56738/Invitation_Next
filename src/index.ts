@@ -30,9 +30,22 @@ import 'discord.js'
 import {ChatInputCommandInteraction, Client, GatewayIntentBits, Interaction, InteractionContextType} from "discord.js";
 import dotenv from 'dotenv';
 
+
 logger.info('Starting Invitation_Next...')
 
 dotenv.configDotenv()
+
+// import { PrismaClient } from '@prisma/client/edge'
+import { withAccelerate } from '@prisma/extension-accelerate'
+import {PrismaClient } from './generated/prisma'
+const prisma = new PrismaClient()
+
+try{
+    prisma.$connect()
+    prisma.$disconnect()
+}catch(e){
+    logger.error('Failed to connect to database:', e)
+}
 
 const TOKEN = process.env.DISCORD_TOKEN;
 
