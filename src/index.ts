@@ -27,7 +27,10 @@ const logger = log4js.getLogger();
 // logger.debug('デバッグレベルのログメッセージ');
 
 import 'discord.js'
-import {ChatInputCommandInteraction, Client, GatewayIntentBits, Interaction, InteractionContextType} from "discord.js";
+import {
+    ChatInputCommandInteraction, Client, GatewayIntentBits, Interaction, InteractionContextType, PermissionFlagsBits,
+    PermissionsBitField
+} from "discord.js";
 import dotenv from 'dotenv';
 
 
@@ -62,10 +65,43 @@ const client = new Client({
 client.once('ready', () => {
     logger.info(`Logged in as ${client.user?.tag}`);
     logger.debug('Connected to following guilds:')
-    client.guilds.cache.forEach(guild => {
+    prisma.$connect()
+    client.guilds.cache.forEach(async guild => {
         logger.debug(guild.name)
+        try {
+            await prisma.guilds.upsert({
+                where: {
+                    guild_id: guild.id,
+                },
+                update: {
+                    guild_name: guild.name
+                },
+                create: {
+                    guild_id: guild.id,
+                    guild_name: guild.name
+                }
+            });
+        } catch (error) {
+            logger.error(`Failed to upsert guild ${guild.name}:`, error);
+        }
+        try{
+            await prisma.guildSettings.upsert({
+                where: {
+                    guild_id: guild.id
+                },
+                update:{
+                    guild_name: guild.name
+                },
+                create: {
+                    guild_id: guild.id,
+                    guild_name: guild.name,
+                    setvc: 'default',
+                }
+            })
+        }catch(e){
+            logger.error(`Failed to upsert guild settings for guild ${guild.name}:`, e)
+        }
     });
-
 });
 
 client.on('interactionCreate', async interaction => {
@@ -76,6 +112,11 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply('Pong!')
     }else if (commandName === 'setvc') {
         await interaction.deferReply()
+        if (!interaction.guild!.members.cache.get(interaction.user.id)?.permissions.has(PermissionFlagsBits.ManageGuild)){
+            await interaction.editReply('権限拒否。')
+            logger.warn(`***${interaction.user.tag} tried to set VC without Manage Guild permission***`)
+            return
+        }
         const optionVc = interaction.options.getString('vc')
         logger.info(`***${interaction.user.tag} tried to set VC to ${optionVc}***`)
     }
