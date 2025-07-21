@@ -27,7 +27,7 @@ const logger = log4js.getLogger();
 // logger.debug('デバッグレベルのログメッセージ');
 
 import 'discord.js'
-import {Client, GatewayIntentBits} from "discord.js";
+import {ChatInputCommandInteraction, Client, GatewayIntentBits, Interaction, InteractionContextType} from "discord.js";
 import dotenv from 'dotenv';
 
 logger.info('Starting Invitation_Next...')
@@ -58,7 +58,7 @@ client.once('ready', () => {
 client.on('interactionCreate', async interaction => {
     if (!interaction.isCommand()) return;
     const commandName = interaction.commandName
-
+    interaction = interaction as ChatInputCommandInteraction
     if (commandName === 'ping') {
         await interaction.reply('Pong!')
     }else if (commandName === 'setvc') {
