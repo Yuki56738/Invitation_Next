@@ -29,7 +29,7 @@ const logger = log4js.getLogger();
 import 'discord.js'
 import {
     ChatInputCommandInteraction, Client, GatewayIntentBits, Interaction, InteractionContextType, PermissionFlagsBits,
-    PermissionsBitField
+    PermissionsBitField, TextChannel, VoiceChannel
 } from "discord.js";
 import dotenv from 'dotenv';
 
@@ -58,7 +58,13 @@ const client = new Client({
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.GuildVoiceStates
+        GatewayIntentBits.GuildVoiceStates,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.GuildScheduledEvents,
+        GatewayIntentBits.DirectMessages,
+        GatewayIntentBits.DirectMessageReactions,
+        // GatewayIntentBits.
     ]
 });
 
@@ -110,12 +116,32 @@ client.on('interactionCreate', async interaction => {
     interaction = interaction as ChatInputCommandInteraction
     if (commandName === 'ping') {
         await interaction.reply('Pong!')
+        return
     }else if (commandName === 'setvc') {
         await interaction.deferReply()
         if (!interaction.guild!.members.cache.get(interaction.user.id)?.permissions.has(PermissionFlagsBits.ManageGuild)){
             await interaction.editReply('権限拒否。')
             logger.warn(`***${interaction.user.tag} tried to set VC without Manage Guild permission***`)
             return
+        }else {
+            const optin_vc = interaction.options.getString('vc')
+            const option_vc_obj:VoiceChannel = interaction.guild?.channels?.cache?.get(optin_vc!) as VoiceChannel
+
+            if (!option_vc_obj || !(option_vc_obj instanceof VoiceChannel)) {
+                await interaction.editReply('有効な音声チャンネルを指定してください。');
+                return;
+            }
+
+
+            await interaction.editReply(`VC作成用VCを、${option_vc_obj.name}: ${option_vc_obj.id} に設定しています...`)
+            interaction = interaction as ChatInputCommandInteraction
+
+            logger.info(`***${interaction.user.tag} set VC to ${option_vc_obj.name}: ${option_vc_obj.id}***...`)
+
+            try{
+                
+            }
+
         }
         const optionVc = interaction.options.getString('vc')
         logger.info(`***${interaction.user.tag} tried to set VC to ${optionVc}***`)
