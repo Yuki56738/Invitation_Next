@@ -139,7 +139,16 @@ client.on('interactionCreate', async interaction => {
             logger.info(`***${interaction.user.tag} set VC to ${option_vc_obj.name}: ${option_vc_obj.id}***...`)
 
             try{
-                
+                prisma.guildSettings.update({
+                    where: {
+                        guild_id: interaction.guild!.id
+                    },
+                    data: {
+                        setvc: option_vc_obj.id
+                    }
+                })
+            }catch (e) {
+                logger.error(`Failed to update guild settings for guild ${interaction.guild!.name}:`, e)
             }
 
         }
