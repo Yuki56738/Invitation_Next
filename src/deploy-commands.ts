@@ -27,8 +27,25 @@ const commandSetvc = new SlashCommandBuilder()
 
 commands.push(commandSetvc)
 
+const commandInvite = new SlashCommandBuilder()
+    .setName('invite')
+    .setDescription('通話募集をする。')
+    .addStringOption(option => option
+        .setName('time')
+        .setDescription('日時'))
+    .addStringOption(option => option
+        .setName('topic')
+        .setDescription('内容'))
+    .addStringOption(option => option
+        .setName('limit')
+        .setDescription('人数制限'))
+
+commands.push(commandInvite)
+
 const rest = new REST({version: '9'}).setToken(TOKEN);
 
 rest.put(Routes.applicationGuildCommands(process.env.DISCORD_CLIENT_ID, process.env.DISCORD_GUILD_ID), {body: commands})
     .then(() => console.log('Successfully registered application commands.'))
     .catch(console.error);
+rest.put(Routes.applicationCommands(process.env.DISCORD_CLIENT_ID), {body: commands}).then(() => console.log('Successfully registered global commands.'))
+.catch(console.error);

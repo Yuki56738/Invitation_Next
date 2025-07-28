@@ -156,6 +156,24 @@ client.on('interactionCreate', async interaction => {
         logger.info(`***${interaction.user.tag} tried to set VC to ${optionVc}***`)
     }
 
+    if (commandName === 'invite'){
+        await interaction.reply('頑張っています...')
+        const userId = interaction.user.id
+        const user = interaction.guild?.members.cache.get(userId)
+        const optionTime = interaction.options.getString('time')
+        const optionLimit = interaction.options.getString('limit')
+        const optionTopic = interaction.options.getString('topic')
+
+        logger.debug(`invite command hit by ${user?.displayName} (${userId}) with ${optionTime} ${optionLimit} ${optionTopic}`)
+
+        const inviteTCId = '1320238233422008394'
+
+        await interaction.guild?.channels.fetch(inviteTCId).then(async (inviteTC) => {
+            inviteTC = inviteTC as TextChannel
+            await inviteTC!.send(`${user?.displayName} さんが待っています！`)
+        })
+    }
+
 })
 
 
